@@ -7,7 +7,9 @@ game.rate = 2
 local accumulator = 0
 local TIME_IN_DAY = 60 * 24
 
-function game.update(dt)
+local function updateGameTime(dt)
+  if game.rate <= 0 then return end
+
   accumulator = accumulator + dt
   local period = 1 / game.rate
 
@@ -20,6 +22,10 @@ function game.update(dt)
       game.time = game.time - TIME_IN_DAY
     end
   end
+end
+
+function game.update(dt)
+  updateGameTime(dt)
 end
 
 function game.dayTimeStr()

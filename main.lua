@@ -5,18 +5,21 @@ end
 
 loveframes = require 'libraries.loveframes.loveframes'
 game = require 'game'
-
-local font = love.graphics.newFont(16)
+gamemenu = require 'gamemenu'
 
 function love.load()
   local major, minor, revision, codename = love.getVersion()
   print(("LOVE Version %d.%d.%d - %s"):format(major, minor, revision, codename))
+
+  gamemenu.load()
 end
 
 function love.update(dt)
   game.update(dt)
   loveframes.update(dt)
 end
+
+local font = love.graphics.newFont(16)
 
 function love.draw()
   love.graphics.print(game.dayTimeStr(), font, 10, 10)
