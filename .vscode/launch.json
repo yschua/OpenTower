@@ -1,7 +1,7 @@
 {
   "configurations": [
     {
-      "name": "Debug LOVE",
+      "name": "Run Love",
       "type": "lua-local",
       "request": "launch",
       "program": {
@@ -9,6 +9,18 @@
       },
       "args": [
         "${workspaceFolder}"
+      ]
+    },
+    {
+      "name": "Debug Love",
+      "type": "lua-local",
+      "request": "launch",
+      "program": {
+        "command": "love"
+      },
+      "args": [
+        "${workspaceFolder}",
+        "--debug"
       ]
     }
   ]

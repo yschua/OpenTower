@@ -1,4 +1,8 @@
--- require("lldebugger").start()
+-- TODO parse command line arguments properly
+if arg[2] == '--debug' then
+  require("lldebugger").start()
+end
+
 loveframes = require 'libraries.loveframes.loveframes'
 game = require 'game'
 
