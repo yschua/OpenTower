@@ -1,13 +1,14 @@
--- TODO parse command line arguments properly
-if arg[2] == '--debug' then
-  require("lldebugger").start()
-end
-
-loveframes = require 'libraries.loveframes.loveframes'
-game = require 'game'
-gamemenu = require 'gamemenu'
-
 function love.load()
+  -- TODO parse command line arguments properly
+  if arg[2] == '--debug' then
+    require("lldebugger").start()
+  end
+
+  -- all globals defined here
+  loveframes = require 'libraries.loveframes.loveframes'
+  game = require 'game'
+  gamemenu = require 'gamemenu'
+
   local major, minor, revision, codename = love.getVersion()
   print(("LOVE Version %d.%d.%d - %s"):format(major, minor, revision, codename))
 

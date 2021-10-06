@@ -1,3 +1,6 @@
-new_globals = { '_', 'love' }
-exclude_files = { '**/.*' }
-allow_defined = true
+std = 'lua51c+love'
+globals = {
+  'loveframes',
+  'game',
+  'gamemenu'
+}

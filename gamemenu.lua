@@ -1,6 +1,3 @@
-loveframes = require 'libraries.loveframes.loveframes'
-game = require 'game'
-
 local gamemenu = {}
 
 function gamemenu.load()
