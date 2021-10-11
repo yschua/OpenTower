@@ -7,12 +7,12 @@ function love.load()
   -- all globals defined here
   loveframes = require 'libraries.loveframes.loveframes'
   game = require 'game'
-  gamemenu = require 'gamemenu'
+  gameMenu = require 'gameMenu'
 
   local major, minor, revision, codename = love.getVersion()
   print(("LOVE Version %d.%d.%d - %s"):format(major, minor, revision, codename))
 
-  gamemenu.load()
+  gameMenu.load()
 end
 
 function love.update(dt)

@@ -1,6 +1,6 @@
-local gamemenu = {}
+local gameMenu = {}
 
-function gamemenu.load()
+function gameMenu.load()
   local gameSpeeds = {
     {'Pause', 0},
     {'Slow', 1},
@@ -23,4 +23,4 @@ function gamemenu.load()
   end
 end
 
-return gamemenu
+return gameMenu
