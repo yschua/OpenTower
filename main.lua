@@ -4,14 +4,12 @@ function love.load()
     require("lldebugger").start()
   end
 
-  -- all globals defined here
-  loveframes = require 'libraries.loveframes.loveframes'
-  game = require 'game'
-  gameMenu = require 'gameMenu'
+  require 'globals'
 
   local major, minor, revision, codename = love.getVersion()
   print(("LOVE Version %d.%d.%d - %s"):format(major, minor, revision, codename))
 
+  game.init()
   gameMenu.load()
 end
 

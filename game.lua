@@ -1,11 +1,16 @@
 local game = {}
 
-game.time = 0
-game.day = 1
-game.rate = 2
 
-local accumulator = 0
+local accumulator
 local TIME_IN_DAY = 60 * 24
+
+function game.init()
+  game.time = 0
+  game.day = 1
+  game.rate = 2
+
+  accumulator = 0
+end
 
 local function updateGameTime(dt)
   if game.rate <= 0 then return end
