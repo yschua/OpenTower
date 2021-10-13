@@ -3,4 +3,5 @@ globals = {
   'loveframes',
   'game',
   'gameMenu',
+  'class'
 }
