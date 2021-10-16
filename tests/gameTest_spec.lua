@@ -12,7 +12,7 @@ describe("game module", function()
   it("updates the game time", function()
     game.update(1)
     assert.are.equal(0, game.time)
-    game.update(60 * 24)
+    game.update(game.TIME_IN_DAY)
     assert.are.equal(0, game.time)
     game.update(0.6)
     assert.are.equal(0, game.time)
@@ -22,12 +22,29 @@ describe("game module", function()
     assert.are.equal(4, game.time)
   end)
 
-  it("triggers events on time", function()
+  it("only updates rate on time tick", function()
+    local initialRate = game.rate
+    local expectedRate = 123
+    game.updateRate(expectedRate)
+    assert.are.equal(initialRate, game.rate)
+    game.update(0.5)
+    assert.are.equal(initialRate, game.rate)
+    game.update(0.5)
+    assert.are.equal(expectedRate, game.rate)
+  end)
+
+  it("creates events with unique IDs", function()
+    local id = game.addEvent(0, function() end)
+    assert.is_equal(id + 1, game.addEvent(0, function() end))
+    assert.is_equal(id + 2, game.addEvent(0, function() end))
+  end)
+
+  it("adds and triggers events", function()
     local event1 = spy.new(function() end)
     local event2 = spy.new(function() end)
 
-    assert.is_equal(1, game.addEvent(0, event1))
-    assert.is_equal(2, game.addEvent(4, event2))
+    game.addEvent(0, event1)
+    game.addEvent(4, event2)
 
     game.update(1)
     assert.spy(event1).was.called()
@@ -35,6 +52,26 @@ describe("game module", function()
 
     game.update(4)
     assert.spy(event2).was.called()
+
+    -- time outside range
+    assert.has.errors(function() game.addEvent(-1, function() end) end)
+    assert.has.errors(function() game.addEvent(game.TIME_IN_DAY, function() end) end)
+  end)
+
+  it("handles recurring and non-recurring events", function()
+    local nonRecurringEvent = spy.new(function() end)
+    local recurringEvent = spy.new(function() end)
+
+    game.addEvent(500, nonRecurringEvent, true)
+    game.addEvent(500, recurringEvent)
+
+    game.update(game.TIME_IN_DAY)
+    assert.spy(nonRecurringEvent).was.called(1)
+    assert.spy(recurringEvent).was.called(1)
+
+    game.update(game.TIME_IN_DAY)
+    assert.spy(nonRecurringEvent).was.called(1)
+    assert.spy(recurringEvent).was.called(2)
   end)
 
   it("removes the correct events", function()

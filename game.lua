@@ -4,10 +4,10 @@ local game = {}
 
 local accumulator
 local events
-local TIME_IN_DAY = 60 * 24
+game.TIME_IN_DAY = 60 * 24
 
 function game.init()
-  game.time = TIME_IN_DAY - 1
+  game.time = game.TIME_IN_DAY - 1
   game.day = 0
   game.rate = 2
 
@@ -15,14 +15,26 @@ function game.init()
   events = {}
 end
 
-function game.addEvent(time, func)
+function game.updateRate(newRate)
+  game.addEvent(
+    (game.time + 1) % game.TIME_IN_DAY,
+    function() game.rate = newRate end,
+    true)
+end
+
+function game.addEvent(time, func, runOnce)
+  -- TODO logging
+  if time < 0 or time >= game.TIME_IN_DAY then
+    error("invalid event time")
+  end
   if not events[time] then events[time] = {} end
-  local event = Event(func)
+  local event = Event(func, runOnce)
   table.insert(events[time], event)
   return event.id
 end
 
 function game.removeEvent(id)
+  -- TODO logging
   -- TODO don't do full search
   for _, eventsAtTime in pairs(events) do
     for i, event in pairs(eventsAtTime) do
@@ -45,15 +57,22 @@ local function updateGameTime(dt)
     accumulator = accumulator - period
     game.time = game.time + 1
 
-    if game.time == TIME_IN_DAY then
+    if game.time == game.TIME_IN_DAY then
       game.day = game.day + 1
-      game.time = game.time - TIME_IN_DAY
+      game.time = game.time - game.TIME_IN_DAY
     end
 
     -- trigger events
     if events[game.time] then
+      local eventIdsToRemove = {}
       for _, event in ipairs(events[game.time]) do
         event.func()
+        if event.runOnce then
+          table.insert(eventIdsToRemove, event.id)
+        end
+      end
+      for _, eventId in ipairs(eventIdsToRemove) do
+        game.removeEvent(eventId)
       end
     end
   end

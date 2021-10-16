@@ -22,6 +22,18 @@
         "${workspaceFolder}",
         "--debug"
       ]
+    },
+    {
+      "name": "Run Tests",
+      "type": "lua-local",
+      "request": "launch",
+      "program": {
+        "command": "busted"
+      },
+      "args": [
+        "--directory=${workspaceFolder}/tests",
+        "."
+      ]
     }
   ]
 }
