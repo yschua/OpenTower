@@ -4,6 +4,7 @@ local game = {}
 
 local accumulator
 local events
+local nextRate
 game.TIME_IN_DAY = 60 * 24
 
 function game.init()
@@ -15,11 +16,8 @@ function game.init()
   events = {}
 end
 
-function game.updateRate(newRate)
-  game.addEvent(
-    (game.time + 1) % game.TIME_IN_DAY,
-    function() game.rate = newRate end,
-    true)
+function game.updateRate(rate)
+  nextRate = rate
 end
 
 function game.addEvent(time, func, runOnce)
@@ -47,6 +45,23 @@ function game.removeEvent(id)
   error("event id does not exist: " .. id)
 end
 
+local function triggerEvents()
+  local currentEvents = events[game.time]
+  if not currentEvents or #currentEvents == 0 then return end
+  local eventIdsToRemove = {}
+
+  for _, event in ipairs(currentEvents) do
+    event.func()
+    if event.runOnce then
+      table.insert(eventIdsToRemove, event.id)
+    end
+  end
+
+  for _, eventId in ipairs(eventIdsToRemove) do
+    game.removeEvent(eventId)
+  end
+end
+
 local function updateGameTime(dt)
   if game.rate <= 0 then return end
 
@@ -62,19 +77,12 @@ local function updateGameTime(dt)
       game.time = game.time - game.TIME_IN_DAY
     end
 
-    -- trigger events
-    if events[game.time] then
-      local eventIdsToRemove = {}
-      for _, event in ipairs(events[game.time]) do
-        event.func()
-        if event.runOnce then
-          table.insert(eventIdsToRemove, event.id)
-        end
-      end
-      for _, eventId in ipairs(eventIdsToRemove) do
-        game.removeEvent(eventId)
-      end
+    if nextRate then
+      game.rate = nextRate
+      nextRate = nil
     end
+
+    triggerEvents()
   end
 end
 
