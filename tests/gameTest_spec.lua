@@ -1,4 +1,3 @@
-
 describe("game module", function()
   setup(function()
     require 'globals'
@@ -12,7 +11,7 @@ describe("game module", function()
   it("updates the game time", function()
     game.update(1)
     assert.are.equal(0, game.time)
-    game.update(game.TIME_IN_DAY)
+    game.update(utils.TIME_IN_DAY)
     assert.are.equal(0, game.time)
     game.update(0.6)
     assert.are.equal(0, game.time)
@@ -55,7 +54,7 @@ describe("game module", function()
 
     -- time outside range
     assert.has.errors(function() game.addEvent(-1, function() end) end)
-    assert.has.errors(function() game.addEvent(game.TIME_IN_DAY, function() end) end)
+    assert.has.errors(function() game.addEvent(utils.TIME_IN_DAY, function() end) end)
   end)
 
   it("handles recurring and non-recurring events", function()
@@ -65,11 +64,11 @@ describe("game module", function()
     game.addEvent(500, nonRecurringEvent, true)
     game.addEvent(500, recurringEvent)
 
-    game.update(game.TIME_IN_DAY)
+    game.update(utils.TIME_IN_DAY)
     assert.spy(nonRecurringEvent).was.called(1)
     assert.spy(recurringEvent).was.called(1)
 
-    game.update(game.TIME_IN_DAY)
+    game.update(utils.TIME_IN_DAY)
     assert.spy(nonRecurringEvent).was.called(1)
     assert.spy(recurringEvent).was.called(2)
   end)
