@@ -1,3 +1,5 @@
+local environment = require 'environment'
+
 function love.load()
   -- TODO parse command line arguments properly
   if arg[2] == '--debug' then
@@ -6,23 +8,27 @@ function love.load()
 
   require 'globals'
 
-  local major, minor, revision, codename = love.getVersion()
-  print(("LOVE Version %d.%d.%d - %s"):format(major, minor, revision, codename))
-
   game.init()
   gameMenu.load()
+  environment.load()
 end
 
 function love.update(dt)
   game.update(dt)
+  environment.update(dt)
   loveframes.update(dt)
 end
 
-local font = love.graphics.newFont(16)
-
 function love.draw()
-  love.graphics.print(game.dayTimeStr(), font, 10, 10)
+  environment.draw()
+
+  -- day time display
+  love.graphics.setColor(255, 255, 255)
+  local font = love.graphics.newFont(16)
+  local dayTimeStr = ("Day %d\n%s"):format(game.day, utils.timeToString(game.time))
+  love.graphics.print(dayTimeStr, font, 10, 10)
   love.graphics.printf(love.timer.getFPS(), love.graphics.getWidth() - 60, 10, 50, 'right')
+
   loveframes.draw()
 end
 

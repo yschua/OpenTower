@@ -20,6 +20,9 @@ function utils.rawToColor(r, g, b, a)
 end
 
 function utils.hexToColor(hex, a)
+  if type(hex) == 'string' then
+    hex = tonumber(hex, 16)
+  end
   local r = bit.band(bit.rshift(hex, 16), 0xff)
   local g = bit.band(bit.rshift(hex, 8), 0xff)
   local b = bit.band(hex, 0xff)
