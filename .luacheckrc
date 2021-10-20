@@ -1,8 +1,7 @@
-std = 'lua51c+love+busted'
+std = 'luajit+love+busted'
 globals = {
   'loveframes',
   'class',
-  'bit',
   'game',
   'gameMenu',
   'utils',
