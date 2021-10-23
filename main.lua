@@ -17,6 +17,10 @@ function love.load()
   game.init()
   gameMenu.load()
   environment.load()
+
+  -- TODO load from save, scale to screen
+  camera:lookAt(256, -128)
+  camera:zoomTo(1.1)
 end
 
 function love.update(dt)
