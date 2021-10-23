@@ -1,7 +1,10 @@
 local environment = require 'environment'
 local Camera = require 'libraries.hump.camera'
+local editgrid = require 'libraries.editgrid.editgrid'
 
-local camera
+local camera = Camera()
+local grid = editgrid.grid(camera, {hideOrigin = true})
+local showGrid = true
 
 function love.load()
   -- TODO parse command line arguments properly
@@ -11,7 +14,6 @@ function love.load()
 
   require 'globals'
 
-  camera = Camera()
   game.init()
   gameMenu.load()
   environment.load()
@@ -24,9 +26,11 @@ function love.update(dt)
 end
 
 function love.draw()
-  camera:attach()
-  environment.draw()
-  camera:detach()
+  camera:draw(function()
+    environment.draw()
+  end)
+
+  if showGrid then grid:draw() end
 
   -- day time display
   love.graphics.setColor(255, 255, 255)
@@ -40,7 +44,7 @@ end
 
 function love.mousemoved(x, y, dx, dy, istouch)
   if love.mouse.isDown(2) then
-    camera:move(-dx, -dy)
+    camera:move(-dx / camera.scale, -dy / camera.scale)
   end
 end
 
@@ -48,7 +52,7 @@ function love.wheelmoved(x, y)
   if y ~= 0 then
     local scaleOffset = y > 0 and 0.1 or -0.1
     camera.scale = camera.scale + scaleOffset
-    camera.scale = math.max(0.5, camera.scale)
+    camera.scale = math.max(0.1, camera.scale)
   end
 end
 
@@ -61,6 +65,10 @@ function love.mousereleased(x, y, button)
 end
 
 function love.keypressed(key, scancode, isrepeat)
+  if key == 'g' then
+    showGrid = not showGrid
+  end
+
   loveframes.keypressed(key, isrepeat)
 end
 
