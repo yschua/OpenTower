@@ -7,3 +7,6 @@
 [submodule "libraries/hump"]
 	path = libraries/hump
 	url = git@github.com:vrld/hump.git
+[submodule "libraries/Editgrid"]
+	path = libraries/Editgrid
+	url = git@github.com:bakpakin/Editgrid.git
