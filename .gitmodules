@@ -4,3 +4,6 @@
 [submodule "libraries/middleclass"]
 	path = libraries/middleclass
 	url = git@github.com:kikito/middleclass.git
+[submodule "libraries/hump"]
+	path = libraries/hump
+	url = git@github.com:vrld/hump.git
