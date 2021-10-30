@@ -1,26 +1,32 @@
+-- TODO parse command line arguments properly
+if arg[2] == '--debug' then
+  require("lldebugger").start()
+end
+
+require 'globals'
+
+local gameMenu = require 'gameMenu'
 local environment = require 'environment'
+local grid = require 'grid'
+
 local Camera = require 'libraries.hump.camera'
-local editgrid = require 'libraries.editgrid.editgrid'
 
 local camera = Camera()
-local grid = editgrid.grid(camera, {hideOrigin = true})
 local showGrid = true
 
+local function resetCamera()
+  camera:lookAt(256, -128)
+  camera:zoomTo(1)
+end
+
 function love.load()
-  -- TODO parse command line arguments properly
-  if arg[2] == '--debug' then
-    require("lldebugger").start()
-  end
-
-  require 'globals'
-
   game.init()
   gameMenu.load()
+  grid.load(camera)
   environment.load()
 
   -- TODO load from save, scale to screen
-  camera:lookAt(256, -128)
-  camera:zoomTo(1.1)
+  resetCamera()
 end
 
 function love.update(dt)
@@ -34,7 +40,7 @@ function love.draw()
     environment.draw()
   end)
 
-  if showGrid then grid:draw() end
+  grid.draw()
 
   -- day time display
   love.graphics.setColor(255, 255, 255)
@@ -69,9 +75,8 @@ function love.mousereleased(x, y, button)
 end
 
 function love.keypressed(key, scancode, isrepeat)
-  if key == 'g' then
-    showGrid = not showGrid
-  end
+  if key == 'g' then grid.toggleGridLines() end
+  if key == 'r' then resetCamera() end
 
   loveframes.keypressed(key, isrepeat)
 end
