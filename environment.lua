@@ -47,6 +47,7 @@ function environment.load()
   local tileSize = 32
   local groundUnder = love.graphics.newQuad(0, 0, tileSize, tileSize, groundImage:getDimensions())
   local groundTop = love.graphics.newQuad(tileSize, 0, tileSize, tileSize, groundImage:getDimensions())
+
   drawGround = function(x, y, width, height)
     love.graphics.setColor(1, 1, 1, 1)
     for iy = y, (y + height - tileSize), tileSize do
@@ -65,21 +66,22 @@ function environment.update(dt)
 end
 
 function environment.draw()
-  local worldX = -256
-  local worldWidth = 1024
-  local skyHeight = 1024
-  local groundHeight = 256
+  local worldWidth = c.WORLD_BLOCK_WIDTH * c.BLOCK_SIZE
+  local worldHeight = c.WORLD_BLOCK_HEIGHT * c.BLOCK_SIZE
+  local groundHeight = c.GROUND_BLOCK_HEIGHT * c.BLOCK_SIZE
+  local skyHeight = worldHeight - groundHeight
 
   -- draw sky
   local skyDimensions = function()
-    return worldX, -skyHeight, 0, (worldWidth / currentSky:getWidth()), (skyHeight / currentSky:getHeight())
+    return 0, utils.toWorldY(c.WORLD_BLOCK_HEIGHT), 0,
+      (worldWidth / currentSky:getWidth()), (skyHeight / currentSky:getHeight())
   end
   love.graphics.setColor(1, 1, 1, 1)
   love.graphics.draw(currentSky, skyDimensions())
   love.graphics.setColor(1, 1, 1, nextSkyOpacity)
   love.graphics.draw(nextSky, skyDimensions())
 
-  drawGround(worldX, 0, worldWidth, groundHeight)
+  drawGround(0, utils.toWorldY(c.GROUND_BLOCK_HEIGHT), worldWidth, groundHeight)
 end
 
 return environment

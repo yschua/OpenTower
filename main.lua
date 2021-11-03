@@ -12,10 +12,9 @@ local grid = require 'grid'
 local Camera = require 'libraries.hump.camera'
 
 local camera = Camera()
-local showGrid = true
 
 local function resetCamera()
-  camera:lookAt(256, -128)
+  camera:lookAt(utils.toWorldCoords(math.floor(c.WORLD_BLOCK_WIDTH / 2), c.GROUND_BLOCK_HEIGHT))
   camera:zoomTo(1)
 end
 

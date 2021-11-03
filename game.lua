@@ -7,7 +7,7 @@ local events
 local nextRate
 
 function game.init()
-  game.time = utils.TIME_IN_DAY - 1
+  game.time = c.TIME_IN_DAY - 1
   game.day = 0
   game.rate = 2
 
@@ -21,7 +21,7 @@ end
 
 function game.addEvent(time, func, runOnce)
   -- TODO logging
-  if time < 0 or time >= utils.TIME_IN_DAY then
+  if time < 0 or time >= c.TIME_IN_DAY then
     error("invalid event time")
   end
   if not events[time] then events[time] = {} end
@@ -71,9 +71,9 @@ local function updateGameTime(dt)
     accumulator = accumulator - period
     game.time = game.time + 1
 
-    if game.time == utils.TIME_IN_DAY then
+    if game.time == c.TIME_IN_DAY then
       game.day = game.day + 1
-      game.time = game.time - utils.TIME_IN_DAY
+      game.time = game.time - c.TIME_IN_DAY
     end
 
     if nextRate then

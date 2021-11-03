@@ -16,14 +16,12 @@ function grid.draw()
   if _showGridLines then _gridLines:draw() end
 
   -- block indicator
-  local worldX, worldY = _camera:worldCoords(love.mouse.getPosition())
-  local blockX = math.floor(worldX / c.BLOCK_SIZE)
-  local blockY = math.floor(worldY / c.BLOCK_SIZE)
+  local blockX, blockY = utils.toBlockCoords(_camera:worldCoords(love.mouse.getPosition()))
   _camera:draw(function()
     love.graphics.rectangle(
       'line',
-      blockX * c.BLOCK_SIZE,
-      blockY * c.BLOCK_SIZE,
+      utils.toWorldX(blockX),
+      utils.toWorldY(blockY),
       c.BLOCK_SIZE,
       c.BLOCK_SIZE)
   end)
