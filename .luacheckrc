@@ -4,4 +4,5 @@ globals = {
   'class',
   'game',
   'utils',
+  'c',
 }

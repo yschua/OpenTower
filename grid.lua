@@ -1,21 +1,42 @@
-local grid = {}
-
 local editgrid = require 'libraries.editgrid.editgrid'
 
-local gridLines
-local showGridLines
+local grid = {}
+
+local _camera
+local _gridLines
+local _showGridLines
 
 function grid.load(camera)
-  gridLines = editgrid.grid(camera, {hideOrigin = true})
-  showGridLines = true
+  _camera = camera
+  _gridLines = editgrid.grid(camera, {hideOrigin = true})
+  _showGridLines = true
 end
 
 function grid.draw()
-  if showGridLines then gridLines:draw() end
+  if _showGridLines then _gridLines:draw() end
+
+  -- block indicator
+  local worldX, worldY = _camera:worldCoords(love.mouse.getPosition())
+  local blockX = math.floor(worldX / c.BLOCK_SIZE)
+  local blockY = math.floor(worldY / c.BLOCK_SIZE)
+  _camera:draw(function()
+    love.graphics.rectangle(
+      'line',
+      blockX * c.BLOCK_SIZE,
+      blockY * c.BLOCK_SIZE,
+      c.BLOCK_SIZE,
+      c.BLOCK_SIZE)
+  end)
+  love.graphics.printf(
+    ("(%d, %d)"):format(blockX, blockY),
+    love.graphics.getWidth() - 60,
+    love.graphics.getHeight() - 20,
+    50,
+    'right')
 end
 
 function grid.toggleGridLines()
-  showGridLines = not showGridLines
+  _showGridLines = not _showGridLines
 end
 
 return grid
