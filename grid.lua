@@ -9,7 +9,7 @@ local _showGridLines
 function grid.load(camera)
   _camera = camera
   _gridLines = editgrid.grid(camera, {hideOrigin = true})
-  _showGridLines = true
+  _showGridLines = false
 end
 
 function grid.draw()
@@ -17,6 +17,7 @@ function grid.draw()
 
   -- block indicator
   local blockX, blockY = utils.toBlockCoords(_camera:worldCoords(love.mouse.getPosition()))
+  love.graphics.setColor(0, 1, 1)
   _camera:draw(function()
     love.graphics.rectangle(
       'line',
@@ -24,7 +25,8 @@ function grid.draw()
       utils.toWorldY(blockY),
       c.BLOCK_SIZE,
       c.BLOCK_SIZE)
-  end)
+    end)
+  love.graphics.setColor(1, 1, 1)
   love.graphics.printf(
     ("(%d, %d)"):format(blockX, blockY),
     love.graphics.getWidth() - 60,

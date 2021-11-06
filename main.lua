@@ -8,6 +8,7 @@ require 'globals'
 local gameMenu = require 'gameMenu'
 local environment = require 'environment'
 local grid = require 'grid'
+local tower = require 'tower'
 
 local Camera = require 'libraries.hump.camera'
 
@@ -23,6 +24,7 @@ function love.load()
   gameMenu.load()
   grid.load(camera)
   environment.load()
+  tower.load()
 
   -- TODO load from save, scale to screen
   resetCamera()
@@ -31,12 +33,14 @@ end
 function love.update(dt)
   game.update(dt)
   environment.update(dt)
+  tower.update(dt)
   loveframes.update(dt)
 end
 
 function love.draw()
   camera:draw(function()
     environment.draw()
+    tower.draw()
   end)
 
   grid.draw()
