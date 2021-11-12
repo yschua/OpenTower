@@ -10,3 +10,6 @@
 [submodule "libraries/Editgrid"]
 	path = libraries/Editgrid
 	url = git@github.com:bakpakin/Editgrid.git
+[submodule "libraries/Jumper"]
+	path = libraries/Jumper
+	url = git@github.com:Yonaba/Jumper.git
