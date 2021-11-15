@@ -1,5 +1,9 @@
 local utils = {}
 
+function utils.xor(a, b)
+  return (a and not b) or (not a and b)
+end
+
 -- time
 
 function utils.time(hour, minute)
