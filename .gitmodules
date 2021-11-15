@@ -13,3 +13,6 @@
 [submodule "libraries/Jumper"]
 	path = libraries/Jumper
 	url = git@github.com:Yonaba/Jumper.git
+[submodule "libraries/Binary-Heaps"]
+	path = libraries/Binary-Heaps
+	url = git@github.com:Yonaba/Binary-Heaps.git
