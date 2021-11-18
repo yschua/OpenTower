@@ -2,17 +2,20 @@ local Mover = require 'objects.Mover'
 
 local Elevator = class('Elevator', Mover)
 
-function Elevator:initialize(blockX, level)
-  Mover.initialize(self, blockX, level)
+function Elevator:initialize(x, y)
+  Mover.initialize(self, x, y)
   self.cost = 10
-  self.connectedLevelsY = {self.y}
+  self.connectedY = {self.y}
+  self.topY = self.y
+  self.bottomY = self.y
 end
 
 function Elevator:connect(y)
-  table.insert(self.connectedLevelsY, y)
+  if y > self.topY or y < self.bottomY then
+    error("elevator connect out of range")
+  end
+  table.insert(self.connectedY, y)
   return self
 end
-
--- TODO some functions for modifying connectedLevelsY
 
 return Elevator

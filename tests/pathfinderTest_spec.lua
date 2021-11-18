@@ -57,7 +57,7 @@ describe("pathfinder module", function()
       {0, 1, 1, 1, 1, 1, 0},
       {0, 1, 1, 1, 1, 1, 0},
     }
-    local stair = Stair(4, 2 - 1)
+    local stair = Stair(4, 2)
     local movers = createMovers{stair}
     linkRoomsToMovers(rooms, movers)
     local finder = Pathfinder(rooms, movers)
@@ -93,7 +93,7 @@ describe("pathfinder module", function()
       {0, 1, 1, 1, 1, 1, 0},
       {0, 1, 1, 1, 1, 1, 0},
     }
-    local elevator = Elevator(5, 1 - 1):connect(2):connect(3)
+    local elevator = Elevator(5, 1):connect(2):connect(3)
     local movers = createMovers{elevator}
     linkRoomsToMovers(rooms, movers)
     local finder = Pathfinder(rooms, movers)

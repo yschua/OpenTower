@@ -2,10 +2,10 @@ local Mover = require 'objects.Mover'
 
 local Stair = class('Stair', Mover)
 
-function Stair:initialize(blockX, level)
-  Mover.initialize(self, blockX, level)
-  self.connectedLevelsY = {self.y, self.y - 1}
+function Stair:initialize(x, y)
+  Mover.initialize(self, x, y)
   self.cost = 5
+  self.connectedY = {self.y, self.y - 1}
 end
 
 return Stair
