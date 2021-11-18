@@ -49,7 +49,7 @@ function Pathfinder:getNeighbors(node)
     -- handle mover node
     local mover = self._movers[node.moverId]
     -- add all connecting rooms
-    for _, coord in ipairs(mover.roomCoords) do
+    for _, coord in ipairs(mover:getConnectingCoords()) do
       table.insert(neighbors, self:getRoom(coord).node)
     end
   else
