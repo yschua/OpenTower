@@ -2,14 +2,14 @@ local Coord = require 'objects.Coord'
 
 local PathNode = class('PathNode')
 
-function PathNode:initialize(roomCoord, moverId)
-  assert(utils.xor(roomCoord, moverId))
-  self.roomCoord = roomCoord
+function PathNode:initialize(coord, moverId)
+  assert(utils.xor(coord, moverId))
+  self.coord = coord
   self.moverId = moverId
   self:clear()
 end
 
-function PathNode.static:Room(x, y)
+function PathNode.static:MapBlock(x, y)
   local coord = (type(x) == 'table' and x.class == Coord) and x or Coord(x, y)
   return self(coord, nil)
 end

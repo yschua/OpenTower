@@ -2,30 +2,26 @@ local BinaryHeap = require 'libraries.Binary-Heaps.binary_heap'
 
 local Pathfinder = class('Pathfinder')
 
--- rooms is a 2d array consisting of tower rooms containing its travel cost and moverIds fields
---   * cost = 0 : non-walkable room
--- movers is a adjacency list mapping a moverId to room coordinates
--- * rooms and movers also have their associating path node object
-function Pathfinder:initialize(rooms, movers)
-  self._rooms = rooms
+function Pathfinder:initialize(map, movers)
+  self._map = map
   self._movers = movers
   self._heuristic = function(startNode, endNode)
     if startNode:isMover() or endNode:isMover() then
       return 0
     end
     -- Manhattan distance
-    local dx = math.abs(startNode.roomCoord.x - endNode.roomCoord.x)
-    local dy = math.abs(startNode.roomCoord.y - endNode.roomCoord.y)
+    local dx = math.abs(startNode.coord.x - endNode.coord.x)
+    local dy = math.abs(startNode.coord.y - endNode.coord.y)
     return dx + dy
   end
   self._nodesToClear = {}
 end
 
-function Pathfinder:getRoom(coord)
+function Pathfinder:getMapBlock(coord)
   if coord.x < 1 or coord.y < 1 then
     return nil
   end
-  return self._rooms[coord.y][coord.x]
+  return self._map[coord.y][coord.x]
 end
 
 function Pathfinder:computeCost(fromNode, toNode)
@@ -33,12 +29,12 @@ function Pathfinder:computeCost(fromNode, toNode)
     assert(not fromNode:isMover())
   end
 
-  -- both nodes are rooms
+  -- both nodes are not movers
   if not fromNode:isMover() and not toNode:isMover() then
-    local fromRoom = self:getRoom(fromNode.roomCoord)
-    local toRoom = self:getRoom(toNode.roomCoord)
-    assert(fromRoom.cost == toRoom.cost)
-    return fromRoom.cost
+    local fromBlock = self:getMapBlock(fromNode.coord)
+    local toBlock = self:getMapBlock(toNode.coord)
+    assert(fromBlock.cost == toBlock.cost)
+    return fromBlock.cost
   end
 
   -- one of the nodes is a mover
@@ -47,8 +43,8 @@ function Pathfinder:computeCost(fromNode, toNode)
   return mover.cost
 end
 
-local function isWalkable(room)
-  return room.cost ~= 0
+local function isWalkable(mapBlock)
+  return mapBlock.cost ~= 0
 end
 
 function Pathfinder:getNeighbors(node)
@@ -56,22 +52,22 @@ function Pathfinder:getNeighbors(node)
   if node:isMover() then
     -- handle mover node
     local mover = self._movers[node.moverId]
-    -- add all connecting rooms
+    -- add all connecting mapBlocks
     for _, coord in ipairs(mover:getConnectingCoords()) do
-      table.insert(neighbors, self:getRoom(coord).node)
+      table.insert(neighbors, self:getMapBlock(coord).node)
     end
   else
-    -- handle room node
-    local room = self:getRoom(node.roomCoord)
+    -- handle mapBlock node
+    local mapBlock = self:getMapBlock(node.coord)
     -- add any movers
-    for _, id in ipairs(room.moverIds) do
-      table.insert(neighbors, self._movers[id].node)
+    if mapBlock.moverId ~= 0 then
+      table.insert(neighbors, self._movers[mapBlock.moverId].node)
     end
-    -- add adjacent rooms
-    for _, coord in ipairs{node.roomCoord:left(), node.roomCoord:right()} do
-      local adjacentRoom = self:getRoom(coord)
-      if adjacentRoom and isWalkable(adjacentRoom) then
-        table.insert(neighbors, self:getRoom(coord).node)
+    -- add adjacent blocks
+    for _, coord in ipairs{node.coord:left(), node.coord:right()} do
+      local adjacentBlock = self:getMapBlock(coord)
+      if adjacentBlock and isWalkable(adjacentBlock) then
+        table.insert(neighbors, self:getMapBlock(coord).node)
       end
     end
   end
@@ -95,8 +91,8 @@ function Pathfinder:getPath(startCoord, endCoord)
     node:clear()
   end
 
-  local startNode = self:getRoom(startCoord).node
-  local endNode = self:getRoom(endCoord).node
+  local startNode = self:getMapBlock(startCoord).node
+  local endNode = self:getMapBlock(endCoord).node
   local openSet = BinaryHeap()
   startNode.g = 0
   startNode.f = startNode.g + self._heuristic(startNode, endNode)
@@ -132,6 +128,9 @@ function Pathfinder:getPath(startCoord, endCoord)
   end
 
   return nil
+end
+
+function Pathfinder.static.draw(path)
 end
 
 return Pathfinder
