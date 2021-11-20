@@ -4,7 +4,7 @@ local Elevator = class('Elevator', Mover)
 
 function Elevator:initialize(x, y)
   Mover.initialize(self, x, y)
-  self.cost = 10
+  self.cost = 20
   self.connectedY = {self.y}
   self.topY = self.y
   self.bottomY = self.y

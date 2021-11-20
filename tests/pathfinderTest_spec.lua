@@ -93,7 +93,9 @@ describe("pathfinder module", function()
       {0, 1, 1, 1, 1, 1, 0},
       {0, 1, 1, 1, 1, 1, 0},
     }
-    local elevator = Elevator(5, 1):connect(2):connect(3)
+    local elevator = Elevator(5, 1)
+    elevator.topY = 3
+    elevator:connect(2):connect(3)
     local movers = createMovers{elevator}
     linkRoomsToMovers(rooms, movers)
     local finder = Pathfinder(rooms, movers)
@@ -125,4 +127,64 @@ describe("pathfinder module", function()
     end
   end)
 
+  it("stair and elevator", function()
+    local rooms = createRooms{
+      {0, 1, 1, 1, 1, 1, 0},
+      {0, 1, 1, 1, 1, 1, 0},
+      {0, 1, 1, 1, 1, 1, 0},
+      {0, 1, 1, 1, 1, 1, 0},
+      {0, 1, 1, 1, 1, 1, 0},
+    }
+    local elevator = Elevator(3, 1)
+    elevator.topY = 5
+    elevator:connect(2):connect(3):connect(4):connect(5)
+    local stair1 = Stair(4, 2)
+    local stair2 = Stair(4, 3)
+    local stair3 = Stair(4, 4)
+    local stair4 = Stair(4, 5)
+    local movers = createMovers{elevator, stair1, stair2, stair3, stair4}
+    linkRoomsToMovers(rooms, movers)
+    local finder = Pathfinder(rooms, movers)
+    do
+      -- prefer stair for floor distance = 1
+      local path = finder:getPath(Coord(2, 1), Coord(2, 2))
+      areSamePath({
+        PathNode:Room(2, 1),
+        PathNode:Room(3, 1),
+        PathNode:Room(4, 1),
+        stair1.node,
+        PathNode:Room(4, 2),
+        PathNode:Room(3, 2),
+        PathNode:Room(2, 2),
+      }, path)
+    end
+    do
+      -- prefer stairs for floor distance <= 3
+      local path = finder:getPath(Coord(2, 1), Coord(2, 4))
+      areSamePath({
+        PathNode:Room(2, 1),
+        PathNode:Room(3, 1),
+        PathNode:Room(4, 1),
+        stair1.node,
+        PathNode:Room(4, 2),
+        stair2.node,
+        PathNode:Room(4, 3),
+        stair3.node,
+        PathNode:Room(4, 4),
+        PathNode:Room(3, 4),
+        PathNode:Room(2, 4),
+      }, path)
+    end
+    do
+      -- prefer elevator for floor distance > 3
+      local path = finder:getPath(Coord(2, 1), Coord(2, 5))
+      areSamePath({
+        PathNode:Room(2, 1),
+        PathNode:Room(3, 1),
+        elevator.node,
+        PathNode:Room(3, 5),
+        PathNode:Room(2, 5),
+      }, path)
+    end
+  end)
 end)
