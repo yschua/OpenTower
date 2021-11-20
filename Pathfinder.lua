@@ -9,7 +9,15 @@ local Pathfinder = class('Pathfinder')
 function Pathfinder:initialize(rooms, movers)
   self._rooms = rooms
   self._movers = movers
-  self._heuristic = function() return 0 end -- TODO
+  self._heuristic = function(startNode, endNode)
+    if startNode:isMover() or endNode:isMover() then
+      return 0
+    end
+    -- Manhattan distance
+    local dx = math.abs(startNode.roomCoord.x - endNode.roomCoord.x)
+    local dy = math.abs(startNode.roomCoord.y - endNode.roomCoord.y)
+    return dx + dy
+  end
   self._nodesToClear = {}
 end
 
