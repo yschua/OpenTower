@@ -21,7 +21,7 @@ end
 
 function Mover:getConnectingCoords()
   local coords = {}
-  for _, y in ipairs(self.connectedY) do
+  for y, _ in pairs(self.connectedY) do
     table.insert(coords, Coord(self.x, y))
   end
   return coords

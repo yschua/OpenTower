@@ -1,6 +1,11 @@
 -- TODO parse command line arguments properly
+-- switch for VS Code
 if arg[2] == '--debug' then
   require("lldebugger").start()
+end
+-- switch for ZeroBrane
+if arg[#arg] == '-debug' then
+  require("mobdebug").start()
 end
 
 require 'globals'
@@ -9,6 +14,8 @@ local gameMenu = require 'gameMenu'
 local environment = require 'environment'
 local grid = require 'grid'
 local tower = require 'tower'
+local people = require 'people'
+local sprites = require 'sprites'
 
 local Camera = require 'libraries.hump.camera'
 
@@ -25,6 +32,8 @@ function love.load()
   grid.load(camera)
   environment.load()
   tower.load()
+  people.load(tower.pathfinder)
+  sprites.load(people)
 
   -- TODO load from save, scale to screen
   resetCamera()
@@ -34,6 +43,7 @@ function love.update(dt)
   game.update(dt)
   environment.update(dt)
   tower.update(dt)
+  people.update(dt)
   loveframes.update(dt)
 end
 
@@ -41,6 +51,7 @@ function love.draw()
   camera:draw(function()
     environment.draw()
     tower.draw()
+    sprites.draw()
   end)
 
   grid.draw()
