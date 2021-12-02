@@ -1,3 +1,4 @@
+local Queue = require 'objects.Queue'
 local BinaryHeap = require 'libraries.Binary-Heaps.binary_heap'
 
 local Pathfinder = class('Pathfinder')
@@ -104,9 +105,9 @@ function Pathfinder:getPath(startCoord, endCoord)
 
     if currentNode == endNode then
       -- path found, reconstruct the path and return
-      local path = {}
+      local path = Queue()
       repeat
-        table.insert(path, 1, currentNode)
+        path:pushleft(currentNode)
         currentNode = currentNode.cameFrom
       until currentNode == nil
       return path

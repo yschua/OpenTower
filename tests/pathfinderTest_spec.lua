@@ -41,10 +41,10 @@ describe("pathfinder module", function()
   end
 
   local function areSamePath(expectedPath, actualPath)
-    assert.are.equal(#expectedPath, #actualPath)
+    assert.are.equal(#expectedPath, actualPath:size())
     for i = 1, #expectedPath do
       local a = expectedPath[i]
-      local b = actualPath[i]
+      local b = actualPath[i + actualPath.first - 1]
       assert.are.equal(a.class, b.class, PathNode)
       if a:isMover() then
         assert.are.equal(a.moverId, b.moverId)
@@ -59,7 +59,7 @@ describe("pathfinder module", function()
       {0, 1, 1, 1, 1, 1, 0},
       {0, 1, 1, 1, 1, 1, 0},
     }
-    local stair = Stair(4, 2)
+    local stair = Stair(4, 1)
     local movers = createMovers{stair}
     addMoversToMap(map, movers)
     local finder = Pathfinder(map, movers)
@@ -140,10 +140,10 @@ describe("pathfinder module", function()
     local elevator = Elevator(3, 1)
     elevator.topY = 5
     elevator:connect(2):connect(3):connect(4):connect(5)
-    local stair1 = Stair(4, 2)
-    local stair2 = Stair(4, 3)
-    local stair3 = Stair(4, 4)
-    local stair4 = Stair(4, 5)
+    local stair1 = Stair(4, 1)
+    local stair2 = Stair(4, 2)
+    local stair3 = Stair(4, 3)
+    local stair4 = Stair(4, 4)
     local movers = createMovers{elevator, stair1, stair2, stair3, stair4}
     addMoversToMap(map, movers)
     local finder = Pathfinder(map, movers)

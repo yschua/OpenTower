@@ -21,7 +21,8 @@ end
 -- this isn't a sprite but ok
 local function drawPath(path)
   local points = {}
-  for _, pathNode in ipairs(path) do
+  for i = path.first, path.last do
+    local pathNode = path[i]
     if not pathNode:isMover() then
       local wx = utils.toWorldX(pathNode.coord.x) + c.BLOCK_SIZE / 2
       local wy = utils.toWorldY(pathNode.coord.y) + c.BLOCK_SIZE / 2
