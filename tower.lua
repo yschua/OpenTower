@@ -4,8 +4,11 @@ local Stair = require 'objects.Stair'
 local Elevator = require 'objects.Elevator'
 local MapBlock = require 'objects.MapBlock'
 local Pathfinder = require 'Pathfinder'
+local people = require 'people'
 
-local tower = {}
+local tower = {
+  people = people
+}
 
 local _floors = {}
 local _map = {}
@@ -13,7 +16,7 @@ local _rooms = {}
 local _movers = {}
 
 function tower.load()
-  tower.pathfinder = Pathfinder(_map, _movers)
+  local pathfinder = Pathfinder(_map, _movers)
 
   for y = 1, c.WORLD_BLOCK_HEIGHT do
     _map[y] = {}
@@ -30,10 +33,13 @@ function tower.load()
   tower.buildRoom('office', 8, 12)
   tower.buildRoom('office', 12, 12)
   tower.buildMover(Stair(6, 11))
+  tower.buildMover(Stair(13, 12))
   local elevator = Elevator(11, 11)
   tower.buildMover(elevator)
   tower.setElevatorRange(elevator.id, 11, 14)
   elevator:connect(12):connect(13):connect(14)
+
+  people.load(pathfinder)
 end
 
 function tower.buildFloor(y, leftX, rightX)
@@ -57,6 +63,7 @@ function tower.buildMover(mover)
   assert(mover.class.super.name == 'Mover')
   _movers[mover.id] = mover
   _map[mover.y][mover.x].moverId = mover.id
+  _map[mover.y + 1][mover.x].moverId = mover.id -- TODO this sucks
 end
 
 function tower.setElevatorRange(id, bottomY, topY)
@@ -73,7 +80,7 @@ function tower.setElevatorRange(id, bottomY, topY)
 end
 
 function tower.update(dt)
-
+  people.update(dt, _movers)
 end
 
 function tower.draw()
@@ -90,7 +97,7 @@ function tower.draw()
         love.graphics.setColor(0, 0, 0)
         love.graphics.print(
           block.roomId,
-          utils.toWorldX(x) + c.BLOCK_SIZE / 2,
+          utils.toWorldX(x) + c.BLOCK_SIZE / 3,
           utils.toWorldY(y) + c.BLOCK_SIZE / 2,
           0, 1, 1,
           textWidth / 2,
@@ -101,7 +108,7 @@ function tower.draw()
         local font = love.graphics.getFont()
         local textWidth = font:getWidth(block.roomId)
         local textHeight = font:getHeight()
-        local wx = utils.toWorldX(x) + c.BLOCK_SIZE / 2
+        local wx = utils.toWorldX(x) + 2 * c.BLOCK_SIZE / 3
         local wy = utils.toWorldY(y) + c.BLOCK_SIZE / 2
         love.graphics.setColor(0, 0, 0)
         love.graphics.rectangle('fill', wx - textWidth / 2, wy - textHeight / 2, textWidth, textHeight)

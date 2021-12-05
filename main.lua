@@ -14,7 +14,6 @@ local gameMenu = require 'gameMenu'
 local environment = require 'environment'
 local grid = require 'grid'
 local tower = require 'tower'
-local people = require 'people'
 local sprites = require 'sprites'
 
 local Camera = require 'libraries.hump.camera'
@@ -32,8 +31,7 @@ function love.load()
   grid.load(camera)
   environment.load()
   tower.load()
-  people.load(tower.pathfinder)
-  sprites.load(people)
+  sprites.load(tower.people)
 
   -- TODO load from save, scale to screen
   resetCamera()
@@ -41,9 +39,9 @@ end
 
 function love.update(dt)
   game.update(dt)
-  environment.update(dt)
-  tower.update(dt)
-  people.update(dt)
+  local rateAdjustedDt = dt * game.rate
+  environment.update(rateAdjustedDt)
+  tower.update(rateAdjustedDt)
   loveframes.update(dt)
 end
 

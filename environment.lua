@@ -60,7 +60,7 @@ end
 
 function environment.update(dt)
   if nextSkyOpacity < 1 then
-    nextSkyOpacity = (nextSkyOpacity + dt * game.rate / transitionDuration)
+    nextSkyOpacity = (nextSkyOpacity + dt / transitionDuration)
     nextSkyOpacity = math.min(nextSkyOpacity, 1)
   end
 end

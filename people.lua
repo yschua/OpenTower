@@ -5,13 +5,17 @@ local people = {}
 
 function people.load(pathfinder)
   -- TODO temp hard coded people
-  local person = Person(utils.toWorldCoords(4, 11))
-  person.target = Coord(9, 12)
-  person.path = pathfinder:getPath(person:currentCoord(), person.target)
+  local startCoord = Coord(4, 11)
+  local endCoord = Coord(4, 13)
+  local person = Person(utils.toWorldCoords(startCoord.x, startCoord.y))
+  person.path = pathfinder:getPath(person:currentCoord(), endCoord)
   table.insert(people, person)
 end
 
-function people.update(dt)
+function people.update(dt, movers)
+  for _, person in ipairs(people) do
+    person:update(dt, movers)
+  end
 end
 
 return people

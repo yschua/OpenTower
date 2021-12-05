@@ -135,7 +135,4 @@ function Pathfinder:getPath(startCoord, endCoord)
   return nil
 end
 
-function Pathfinder.static.draw(path)
-end
-
 return Pathfinder

@@ -30,12 +30,18 @@ local function drawPath(path)
       table.insert(points, wy)
     end
   end
-  love.graphics.setColor(1, 0, 1, 1)
-  love.graphics.line(points)
 
-  local destX = points[#points - 1]
-  local destY = points[#points]
-  love.graphics.circle('fill', destX, destY, 3)
+  love.graphics.setColor(1, 0, 1, 1)
+
+  if #points >= 4 then
+    love.graphics.line(points)
+  end
+
+  if #points >= 2 then
+    local destX = points[#points - 1]
+    local destY = points[#points]
+    love.graphics.circle('fill', destX, destY, 3)
+  end
 end
 
 function sprites.draw()
