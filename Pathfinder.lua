@@ -107,7 +107,11 @@ function Pathfinder:getPath(startCoord, endCoord)
       -- path found, reconstruct the path and return
       local path = Queue()
       repeat
-        path:pushleft(currentNode)
+        local isNotIntermediaryNode = currentNode == startNode or currentNode == endNode or
+          currentNode:isMover() or path:peekleft():isMover() or currentNode.cameFrom:isMover()
+        if isNotIntermediaryNode then
+          path:pushleft(currentNode)
+        end
         currentNode = currentNode.cameFrom
       until currentNode == nil
       return path

@@ -68,9 +68,6 @@ describe("pathfinder module", function()
       local path = finder:getPath(Coord(6, 1), Coord(2, 1))
       areSamePath({
         PathNode:MapBlock(6, 1),
-        PathNode:MapBlock(5, 1),
-        PathNode:MapBlock(4, 1),
-        PathNode:MapBlock(3, 1),
         PathNode:MapBlock(2, 1),
       }, path)
     end
@@ -79,11 +76,9 @@ describe("pathfinder module", function()
       local path = finder:getPath(Coord(2, 1), Coord(6, 2))
       areSamePath({
         PathNode:MapBlock(2, 1),
-        PathNode:MapBlock(3, 1),
         PathNode:MapBlock(4, 1),
         stair.node,
         PathNode:MapBlock(4, 2),
-        PathNode:MapBlock(5, 2),
         PathNode:MapBlock(6, 2),
       }, path)
     end
@@ -106,13 +101,9 @@ describe("pathfinder module", function()
       local path = finder:getPath(Coord(2, 1), Coord(2, 3))
       areSamePath({
         PathNode:MapBlock(2, 1),
-        PathNode:MapBlock(3, 1),
-        PathNode:MapBlock(4, 1),
         PathNode:MapBlock(5, 1),
         elevator.node,
         PathNode:MapBlock(5, 3),
-        PathNode:MapBlock(4, 3),
-        PathNode:MapBlock(3, 3),
         PathNode:MapBlock(2, 3),
       }, path)
     end
@@ -152,11 +143,9 @@ describe("pathfinder module", function()
       local path = finder:getPath(Coord(2, 1), Coord(2, 2))
       areSamePath({
         PathNode:MapBlock(2, 1),
-        PathNode:MapBlock(3, 1),
         PathNode:MapBlock(4, 1),
         stair1.node,
         PathNode:MapBlock(4, 2),
-        PathNode:MapBlock(3, 2),
         PathNode:MapBlock(2, 2),
       }, path)
     end
@@ -165,7 +154,6 @@ describe("pathfinder module", function()
       local path = finder:getPath(Coord(2, 1), Coord(2, 4))
       areSamePath({
         PathNode:MapBlock(2, 1),
-        PathNode:MapBlock(3, 1),
         PathNode:MapBlock(4, 1),
         stair1.node,
         PathNode:MapBlock(4, 2),
@@ -173,7 +161,6 @@ describe("pathfinder module", function()
         PathNode:MapBlock(4, 3),
         stair3.node,
         PathNode:MapBlock(4, 4),
-        PathNode:MapBlock(3, 4),
         PathNode:MapBlock(2, 4),
       }, path)
     end

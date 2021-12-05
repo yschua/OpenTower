@@ -5,6 +5,24 @@ function Queue:initialize()
   self.last = -1
 end
 
+function Queue:empty()
+  return (self.first > self.last)
+end
+
+function Queue:peekleft(offset)
+  offset = offset or 0
+  return self:empty() and nil or self[self.first + offset]
+end
+
+function Queue:peekright(offset)
+  offset = offset or 0
+  return self:empty() and nil or self[self.last - offset]
+end
+
+function Queue:size()
+  return self:empty() and 0 or (self.last - self.first + 1)
+end
+
 function Queue:pushleft(value)
   local first = self.first - 1
   self.first = first
@@ -33,10 +51,6 @@ function Queue:popright()
   self[last] = nil
   self.last = last - 1
   return value
-end
-
-function Queue:size()
-  return (self.first > self.last) and 0 or (self.last - self.first + 1)
 end
 
 return Queue
