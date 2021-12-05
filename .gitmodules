@@ -16,3 +16,6 @@
 [submodule "libraries/Binary-Heaps"]
 	path = libraries/Binary-Heaps
 	url = git@github.com:Yonaba/Binary-Heaps.git
+[submodule "libraries/lume"]
+	path = libraries/lume
+	url = git@github.com:rxi/lume.git
