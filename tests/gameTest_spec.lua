@@ -1,6 +1,6 @@
 describe("game module", function()
   setup(function()
-    require 'globals'
+    require 'core.globals'
   end)
 
   before_each(function()

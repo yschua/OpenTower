@@ -1,10 +1,10 @@
-require 'globals'
+require 'core.globals'
 local Coord = require 'objects.Coord'
 local PathNode = require 'objects.PathNode'
 local Stair = require 'objects.Stair'
 local Elevator = require 'objects.Elevator'
 local MapBlock = require 'objects.MapBlock'
-local Pathfinder = require 'Pathfinder'
+local Pathfinder = require 'core.Pathfinder'
 
 describe("pathfinder module", function()
   setup(function()

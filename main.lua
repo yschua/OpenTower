@@ -8,14 +8,13 @@ if arg[#arg] == '-debug' then
   require("mobdebug").start()
 end
 
-require 'globals'
+require 'core.globals'
 
-local gameMenu = require 'gameMenu'
-local environment = require 'environment'
-local grid = require 'grid'
-local tower = require 'tower'
-local sprites = require 'sprites'
-
+local gameMenu = require 'core.gameMenu'
+local environment = require 'core.environment'
+local grid = require 'core.grid'
+local tower = require 'core.tower'
+local sprites = require 'core.sprites'
 local Camera = require 'libraries.hump.camera'
 
 local camera = Camera()

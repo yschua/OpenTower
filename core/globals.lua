@@ -8,8 +8,8 @@ c = {
 }
 
 class = require 'libraries.middleclass.middleclass'
-utils = require 'utils'
-game = require 'game'
+utils = require 'core.utils'
+game = require 'core.game'
 
 if love then
   loveframes = require 'libraries.LoveFrames.loveframes'

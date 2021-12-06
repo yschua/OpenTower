@@ -1,4 +1,4 @@
-local Event = require 'Event'
+local Event = require 'objects.Event'
 
 local game = {}
 

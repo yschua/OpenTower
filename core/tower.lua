@@ -3,8 +3,8 @@ local Room = require 'objects.Room'
 local Stair = require 'objects.Stair'
 local Elevator = require 'objects.Elevator'
 local MapBlock = require 'objects.MapBlock'
-local Pathfinder = require 'Pathfinder'
-local people = require 'people'
+local Pathfinder = require 'core.Pathfinder'
+local people = require 'core.people'
 
 local tower = {
   people = people
