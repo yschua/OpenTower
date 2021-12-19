@@ -11,6 +11,7 @@ function sprites.load(people)
   local man = love.graphics.newQuad(49, 107, 20, manHeight, manImage:getDimensions())
 
   drawMan = function(x, y)
+    love.graphics.setColor(1, 1, 1)
     love.graphics.draw(manImage, man, x, y + c.BLOCK_SIZE - manHeight)
   end
 end
@@ -19,24 +20,12 @@ function sprites.update(dt)
 end
 
 -- this isn't a sprite but ok
-local function drawPath(path)
-  local points = {}
-  for i = path.first, path.last do
-    local pathNode = path[i]
-    if not pathNode:isMover() then
-      local wx = utils.toWorldX(pathNode.coord.x) + c.BLOCK_SIZE / 2
-      local wy = utils.toWorldY(pathNode.coord.y) + c.BLOCK_SIZE / 2
-      table.insert(points, wx)
-      table.insert(points, wy)
-    end
-  end
-
-  love.graphics.setColor(1, 0, 1, 1)
-
+local function drawPath(points)
+  if not points then return end
+  love.graphics.setColor(1, 0, 1)
   if #points >= 4 then
     love.graphics.line(points)
   end
-
   if #points >= 2 then
     local destX = points[#points - 1]
     local destY = points[#points]
@@ -45,11 +34,10 @@ local function drawPath(path)
 end
 
 function sprites.draw()
+  love.graphics.setColor(1, 1, 1)
   for _, person in ipairs(_people) do
+    drawPath(person.pathPoints)
     drawMan(person.wx, person.wy)
-    if person.path then
-      drawPath(person.path)
-    end
   end
 end
 

@@ -8,7 +8,7 @@ function people.load(pathfinder)
   local startCoord = Coord(4, 11)
   local endCoord = Coord(4, 13)
   local person = Person(utils.toWorldCoords(startCoord.x, startCoord.y))
-  person.path = pathfinder:getPath(person:currentCoord(), endCoord)
+  person:setPath(pathfinder:getPath(person:currentCoord(), endCoord))
   table.insert(people, person)
 end
 
