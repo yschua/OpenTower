@@ -8,6 +8,7 @@ function Person:initialize(wx, wy)
   self.wx = wx
   self.wy = wy
   self.path = Queue()
+  self.isInElevator = false
 end
 
 function Person:currentCoord()
@@ -41,7 +42,14 @@ function Person:update(dt, movers)
     local mover = movers[nextNode.moverId]
     local dest = self.path:peekleft(1)
 
-    if mover.name == 'Elevator' then
+    if mover.class.name == 'Elevator' then
+      local elevator = mover
+      if not self.isInElevator then
+        elevator:queuePerson(self, dest.coord.y)
+        -- elevator:loadPerson(dest.coord.y, self)
+      else
+        -- draw person at elevator level
+      end
       -- TODO
     else
       local disp = utils.toWorldY(dest.coord.y) - self.wy
@@ -54,6 +62,8 @@ function Person:update(dt, movers)
       self.wy = lume.round(self.wy + dy)
     end
   else
+    assert(nextNode.coord.y == utils.toBlockY(self.wy),
+      "person and destination must be on the same floor")
     local disp = utils.toWorldX(nextNode.coord.x) - self.wx
     if disp == 0 then
       self.path:popleft()

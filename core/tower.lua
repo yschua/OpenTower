@@ -81,6 +81,9 @@ end
 
 function tower.update(dt)
   people.update(dt, _movers)
+  for _, mover in pairs(_movers) do
+    mover:update(dt)
+  end
 end
 
 function tower.draw()
@@ -116,6 +119,10 @@ function tower.draw()
         love.graphics.print(block.moverId, wx, wy, 0, 1, 1, textWidth / 2, textHeight / 2)
       end
     end
+  end
+
+  for _, mover in pairs(_movers) do
+    mover:draw()
   end
 end
 

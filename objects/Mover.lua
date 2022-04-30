@@ -27,4 +27,12 @@ function Mover:getConnectingCoords()
   return coords
 end
 
+function Mover:update(dt)
+
+end
+
+function Mover:draw()
+
+end
+
 return Mover
